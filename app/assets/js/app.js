@@ -35,6 +35,11 @@ angular.module('myApp', [
         templateUrl:'templates/registro.html',
         controller:'ProjectRegisterController as projectRegister',
     })
+    .state('home.myRegister', {
+        url: '/newregister',
+        templateUrl:'templates/my_register.html',
+        controller:'ProjectMyRegisterController as projectMyRegister',
+    })
 })
 
 // Home Controller
@@ -108,6 +113,51 @@ angular.module('myApp', [
         }
   }
 
+})
+
+// Meus Dados Controller
+.controller("ProjectMyRegisterController", function($rootScope, $scope, usuariosService, $location) {
+    $scope.formSuccess = false;
+    $scope.user = {
+        email:$rootScope.usuarioLogado.email,
+        password:"",
+        confirmPassword:""
+    }
+
+    $scope.submit = function(){
+        if($scope.registerForm.$valid){
+            if($scope.user.email != $rootScope.usuarioLogado.email){
+                usuariosService.updateEmail($scope.user.email)
+                .then(function() {
+                    $scope.formSuccess = true;
+                }, function(error) {
+                    $scope.registerForm.email.$invalid = true;
+                    if(error.code == "auth/email-already-in-use"){
+                        $scope.registerForm.email.$error.exist = true;
+                    }else{  
+                        $scope.registerForm.email.$error.others = true;
+                    }
+                    console.log(error);
+                });
+            }
+            if($scope.user.password.length > 0){
+                usuariosService.updatePassword($scope.user.password)
+                .then(function() {
+                    $scope.formSuccess = true;
+                }, function(error) {
+                    $scope.registerForm.password.$invalid = true;
+                    console.log(error);
+                });
+            }
+         }else{
+            angular.forEach($scope.user,function(value,key) {
+                if(value && value.length == 0){
+                    $scope.registerForm[key].$dirty = true;
+                    $scope.registerForm[key].$error.required = true;
+                }
+            }, this);
+         }
+    }
 })
 
 // Diretiva para verificar confirmação de senha
