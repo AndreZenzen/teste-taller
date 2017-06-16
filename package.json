@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "firebase serve",
-    "deploy": "firebase deploy"
+    "deploy": "firebase deploy",
+    "serve": "gulp"
   },
   "repository": {
     "type": "git",
@@ -22,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/AndreZenzen/teste-taller/issues"
   },
-  "homepage": "https://github.com/AndreZenzen/teste-taller#readme"
+  "homepage": "https://github.com/AndreZenzen/teste-taller#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0"
+  }
 }
