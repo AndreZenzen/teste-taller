@@ -48,7 +48,7 @@ angular.module('myApp', [
 .controller("ProjectLoginController", function($rootScope, $scope, usuariosService, $location, $state) {
   $scope.user = {
       email:'',
-      password:''
+      password:''   
   }
  
   $scope.submit = function(){
@@ -109,3 +109,13 @@ angular.module('myApp', [
   }
 
 })
+
+// Verify user is logged
+.run(function ($rootScope, $location) {
+    $rootScope.$on('$locationChangeStart', function () { 
+        if($rootScope.usuarioLogado == null && !/registro/.test($location.path()) ){
+            $location.path('/login');
+        }
+    });
+})
+
