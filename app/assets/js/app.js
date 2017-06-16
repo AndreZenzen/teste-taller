@@ -110,6 +110,47 @@ angular.module('myApp', [
 
 })
 
+// Service para lib firebase de autenticação
+.service('usuariosService', function ($rootScope, $location, $firebaseAuth) {
+    /**
+     * login user.
+     */
+    this.validaLogin = function(user){
+        return $firebaseAuth().$signInWithEmailAndPassword(user.email, user.password);
+    }
+
+    /**
+     * create user.
+     */
+    this.createUser = function(user){
+        return $firebaseAuth().$createUserWithEmailAndPassword(user.email, user.password);
+    }
+
+    /**
+     * logout user.
+     */
+    this.logout = function(){
+        $firebaseAuth().$signOut()
+        $rootScope.usuarioLogado = null;
+        $location.path('/login');
+    }
+
+    /**
+     * Update password user.
+     */
+    this.updatePassword = function(password){
+        return $firebaseAuth().$updatePassword(password);
+    }
+
+    /**
+     * Update email user.
+     */
+    this.updateEmail = function(email){
+        return $firebaseAuth().$updateEmail(email);
+    }
+
+})
+
 // Verify user is logged
 .run(function ($rootScope, $location) {
     $rootScope.$on('$locationChangeStart', function () { 
