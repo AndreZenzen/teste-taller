@@ -1,0 +1,8 @@
+/node_modules/
+/dist/
+/app/bower_components/
+/nbproject/
+.DS_Store
+/tmp/
+.tmp/
+dist
