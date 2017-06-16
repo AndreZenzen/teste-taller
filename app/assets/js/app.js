@@ -536,3 +536,9 @@ function passwordVerify() {
     });
 })
 
+// filter for get count object
+.filter('objectKeysLength', [function() {
+    return function(items) {
+        return items == undefined?0:Object.keys(items).length;
+    };
+}])
