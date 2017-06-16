@@ -86,3 +86,11 @@ body {
     padding-left: 0;
   }
 }
+
+select.loader   { 
+    background-image: url('../imgs/loader.gif');
+    background-repeat: no-repeat;
+    background-position: right;
+    background-position-x: 97%;
+
+ }
