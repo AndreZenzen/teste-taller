@@ -40,6 +40,11 @@ angular.module('myApp', [
         templateUrl:'templates/my_register.html',
         controller:'ProjectMyRegisterController as projectMyRegister',
     })
+    .state('home.newCompany', {
+        url: '/newcompany',
+        templateUrl:'templates/company.html',
+        controller:'ProjectCompanyController as projectCompany'
+    })
 })
 
 // Home Controller
@@ -158,6 +163,115 @@ angular.module('myApp', [
             }, this);
          }
     }
+})
+
+// Cadastro empresa Controller
+.controller("ProjectCompanyController", function($scope, $location, $firebaseObject) {
+    $scope.companies = {};
+    $scope.cnpjExist = false;
+    $scope.valida = true;
+    $scope.cp = {
+        name:"",
+        cnpj:""
+    }
+
+    firebase.database().ref('/company').once('value').then(function(snapshot) {
+        $scope.companies = snapshot.val();
+    });
+
+    $scope.submit = function(){
+        if($scope.companyForm.$valid){
+            $scope.cnpjExist = false;
+            angular.forEach($scope.companies, function(value,key) {
+                if(value.cnpj == $scope.cp.cnpj ){
+                    $scope.cnpjExist = true;
+                }
+            }, this);
+
+            if(!$scope.cnpjExist){
+                var newPostKey = firebase.database().ref().child('company').push().key;
+                var updates = {};
+                updates['/company/' + newPostKey] = $scope.cp;
+                $scope.formSuccess = firebase.database().ref().update(updates);
+            }
+        }else{
+            angular.forEach($scope.cp,function(value,key) {
+                if(value && value.length == 0){
+                    $scope.companyForm[key].$dirty = true;
+                    $scope.companyForm[key].$error.required = true;
+                }
+            }, this);
+        }
+    }
+
+    $scope.validaCNPJ = function(){
+        $scope.valida = validaCNPJ($scope.cp.cnpj);
+        $scope.companyForm.cnpj.$invalid = !$scope.valida;
+        $scope.companyForm.cnpj.$error.validateCnpj = !$scope.valida;
+        if(!$scope.cp.name && $scope.cp.name.length == 0){
+            $scope.companyForm.$valid = false;
+        }
+    }
+    var validaCNPJ = function (str) {
+            if (str == null)
+              return false;
+
+            str = str.replace(/\./g, '');
+            str = str.replace('/', '');
+            str = str.replace('-', '');
+
+            var cnpj = str;
+            var tamanho;
+            var numeros;
+            var digitos;
+            var soma;
+            var pos;
+            var resultado;
+            var i;
+
+            if (cnpj == '')
+              return false;
+
+            if (cnpj.length != 14)
+              return false;
+
+            // Regex to validate strings with 14 same characters
+            var regex = /([0]{14}|[1]{14}|[2]{14}|[3]{14}|[4]{14}|[5]{14}|[6]{14}|[7]{14}|[8]{14}|[9]{14})/g
+            // Regex builder
+            var patt = new RegExp(regex);
+            if (patt.test(cnpj))
+              return false;
+
+            // Valida DVs
+            tamanho = cnpj.length - 2
+            numeros = cnpj.substring(0, tamanho);
+            digitos = cnpj.substring(tamanho);
+            soma = 0;
+            pos = tamanho - 7;
+            for (i = tamanho; i >= 1; i--) {
+              soma += numeros.charAt(tamanho - i) * pos--;
+              if (pos < 2)
+                pos = 9;
+            }
+            resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+            if (resultado != digitos.charAt(0))
+              return false;
+
+            tamanho = tamanho + 1;
+            numeros = cnpj.substring(0, tamanho);
+            soma = 0;
+            pos = tamanho - 7;
+            for (i = tamanho; i >= 1; i--) {
+              soma += numeros.charAt(tamanho - i) * pos--;
+              if (pos < 2)
+                pos = 9;
+            }
+            resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+            if (resultado != digitos.charAt(1))
+              return false;
+
+            return true;
+          }
 })
 
 // Diretiva para verificar confirmação de senha
