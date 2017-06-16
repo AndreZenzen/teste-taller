@@ -1,0 +1,36 @@
+<div>
+    <div class="jumbotron" style="padding-bottom:0px;">
+        <h2>Login Pedidos Churrasco</h2>
+    </div>
+    <form class="form-signin col-sm-offset-2 " name="signinForm" role="form" 
+        ng-submit="submit()" style="max-width: 550px;padding: 15px;margin: 0 auto;" novalidate>
+        <div class="form-group" ng-class="{ 'has-error' : signinForm.email.$dirty && signinForm.email.$invalid}">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" ng-model="user.email" placeholder="Email" required>
+            <p class="help-block" ng-if="signinForm.email.$dirty">
+                <span class="clearfix" ng-show="signinForm.email.$invalid">Entre com email válido.</span>
+                <span ng-show="signinForm.email.$error.required">Email é requerido.</span>
+            </p>
+        </div> 
+        <div class="form-group" ng-class="{ 'has-error' : signinForm.password.$dirty && signinForm.password.$invalid }">
+            <label>Senha</label>
+            <input type="password" name="password" class="form-control" ng-model="user.password" ng-minlength="8" placeholder="Senha" required>
+            <p class="help-block" ng-if="signinForm.password.$dirty">
+                <span class="clearfix" ng-show="signinForm.password.$error.minlength">A senha deverá ser maior que 8 caracteres.</span>
+                <span ng-show="signinForm.password.$error.required">Senha é requerida.</span>
+            </p>
+        </div>
+        <div class="form-group clearfix">
+            <div class="col-sm-6">
+                <button type="button" class="btn btn-default btn-block" ui-sref="registro">Novo Cadastro</button>
+            </div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </div>
+        </div>  
+        </br>  
+        <p class="bg-danger" ng-show="loginError" style="padding: 15px;">
+            <span>Usuario ou senha incorretos.</span>
+        </p>
+    </form>
+</div>

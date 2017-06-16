@@ -1,0 +1,24 @@
+<div>
+  <!-- The justified navigation menu is meant for single line per list item.
+           Multiple lines will require custom code not provided by Bootstrap. -->
+      <div class="masthead">
+        <h2 class="text-muted">Pedidos Churrasco</h2>
+        <nav>
+          <ul class="nav nav-justified">
+            <li ui-sref-active="active"><a href ui-sref="home.dashboard">Dashboard</a></li>
+            <!--<li ui-sref-active="active"><a href ui-sref="home.viewTickets">Meus pedidos</a></li>-->
+            <li ui-sref-active="active"><a href ui-sref="home.newCompany">Nova empresa</a></li>
+            <li ui-sref-active="active"><a href ui-sref="home.ticket">Novo pedido</a></li>
+            <li ui-sref-active="active"><a href ui-sref="home.myRegister">Meus dados</a></li>
+            <li ui-sref-active="active"><a href="#" ng-click="logout()">Sair</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <ui-view></ui-view>
+
+      <!-- Site footer -->
+      <footer class="footer">
+        <p>&copy; 2016 Company, Inc.</p>
+      </footer>
+</div>
