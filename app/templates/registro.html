@@ -1,0 +1,51 @@
+<div>
+    <div class="jumbotron" style="padding-bottom:0px;">
+        <h3>Novo Cadastro</h3>
+    </div>
+    <form class="col-sm-offset-2" name="registerForm" role="form"
+        ng-submit="submit()" style="max-width: 550px;padding: 15px;margin: 0 auto;" novalidate>
+        <div class="form-group" ng-class="{ 'has-error' : registerForm.email.$dirty && registerForm.email.$invalid }">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" ng-model="user.email" required>
+            <p class="help-block" ng-if="registerForm.email.$dirty">
+              <span class="clearfix" ng-show="registerForm.email.$invalid">Entre com email válido.</span>
+              <span ng-show="registerForm.email.$error.required">Email requerido.</span>
+            </p>
+        </div> 
+        <div class="form-group" ng-class="{ 'has-error' : registerForm.password.$dirty && registerForm.password.$invalid }">
+            <label>Senha</label>
+            <input type="password" name="password" class="form-control" 
+              ng-model="user.password" ng-minlength="8" password-verify="{{user.confirmPassword}}" required>
+            <p class="help-block" ng-if="registerForm.password.$dirty">
+              <span class="clearfix" ng-show="registerForm.password.$error.minlength">A senha deverá ser maior que 8 caracteres.</span>
+              <span ng-show="registerForm.password.$error.required">Senhas não conferem.</span>
+            </p>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : registerForm.confirmPassword.$dirty && registerForm.confirmPassword.$invalid }">
+            <label>Repetir Senha</label>
+            <input type="password" name="confirmPassword" class="form-control"  
+              ng-model="user.confirmPassword" ng-minlength="8" password-verify="{{user.password}}" required>
+            <p class="help-block" ng-if="registerForm.confirmPassword.$dirty">
+                <span class="clearfix" ng-show="registerForm.confirmPassword.$error.minlength"> 
+                  A senha deverá ser maior que 8 caracteres.
+                </span>
+                <span class="clearfix" ng-show="registerForm.confirmPassword.passwordVerify"> 
+                  Senhas não conferem.
+                </span>
+                <span ng-show="registerForm.confirmPassword.$error.required">Confirmação de senha é requerida.</span>
+            </p>
+        </div>
+        <div class="form-group clearfix">
+            <div class="col-sm-6">
+                <button type="button" class="btn btn-default btn-block" ui-sref="login">Cancelar</button>
+            </div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary btn-block" ng-click="registro()">Cadastrar</button>
+            </div>
+        </div>
+        </br>  
+        <p class="bg-danger" ng-show="submitError" style="padding: 15px;">
+            <span>Email já está sendo utilizado.</span>
+        </p>  
+    </form>
+</div>

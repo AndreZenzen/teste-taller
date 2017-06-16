@@ -30,6 +30,11 @@ angular.module('myApp', [
         controller:'ProjectLoginController as projectLogin',
         templateUrl:'templates/login.html'
     })
+    .state('registro', {
+        url: '/registro',
+        templateUrl:'templates/registro.html',
+        controller:'ProjectRegisterController as projectRegister',
+    })
 })
 
 // Home Controller
@@ -45,7 +50,7 @@ angular.module('myApp', [
       email:'',
       password:''
   }
-  //$scope.$apply();
+ 
   $scope.submit = function(){
    
     if($scope.signinForm.$valid){
@@ -71,7 +76,36 @@ angular.module('myApp', [
   }
 
   $scope.register = function(){
-     $location.path('/registro');
-    //$state.go('registro');
+    $location.path('/registro');
   }
+})
+
+// Cadastro Controller
+.controller("ProjectRegisterController", function($scope, usuariosService, $location) {
+    $scope.user = {
+        email:"",
+        password:"",
+        confirmPassword:""
+    }
+
+    $scope.submit = function(){
+        if($scope.registerForm.$valid){
+            usuariosService.createUser($scope.user)
+            .then(function(firebaseUser){
+                $location.path('/login');
+            })
+            .catch(function(error) {
+                console.log("Create User failed:", error);
+                $scope.submitError = true;
+            });
+        }else{
+            angular.forEach($scope.user,function(value,key) {
+                if(value && value.length == 0){
+                    $scope.registerForm[key].$dirty = true;
+                    $scope.registerForm[key].$error.required = true;
+                }
+            }, this);
+        }
+  }
+
 })
