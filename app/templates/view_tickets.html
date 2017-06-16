@@ -1,0 +1,43 @@
+<div>
+    <h3>Meus Pedidos <small ng-show="empresa">{{empresa}}</small></h3>
+    </br>
+
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="cnpj_input">CNPJ</label>
+            <input type="text" class="form-control" id="cnpj_input" ng-model="form.cnpj" placeholder="informe o CNPJ">
+        </div>
+        <div class="form-group">
+            <label for="pedido_input">Pedido</label>
+            <input type="text" class="form-control" id="pedido_input" ng-model="form.pedido">
+        </div>
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </form>
+    </br>
+    </br>
+    <table class="table">  
+        <!--<h4>Minhas empresas</h4>-->
+        <thead> 
+            <tr> 
+                <!--<th>#</th> -->
+                <th>Código pedido</th> 
+                <th>CNPJ / Name</th> 
+                <th>Itens do pedido</th> 
+                <th>Ações</th> 
+            </tr> 
+        </thead> 
+        <tbody> 
+            <!-- element in list | filter:form.cnpj | orderBy:'cnpj' -->
+            <tr ng-repeat="element in list | filter:{empresa:{cnpj:form.cnpj}} | filter:{key:form.pedido}">
+                <th style="vertical-align: middle;" scope="row">{{element.key}}</th>
+                <td style="vertical-align: middle;" >{{element.empresa.cnpj}} / {{element.empresa.name}}</td> 
+                <td>
+                    <p ng-repeat="(key,value) in element.produtos">
+                        {{value.qtd}}x {{value.produto}}
+                    </p>
+                </td> 
+                <td style="vertical-align: middle;"><button class="btn btn-info btn-xs" ng-click="cancelPedido($index, element.key)">Cancelar</button></td>  
+            </tr>     
+        </tbody> 
+    </table>
+</div>

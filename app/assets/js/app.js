@@ -45,6 +45,11 @@ angular.module('myApp', [
         templateUrl:'templates/company.html',
         controller:'ProjectCompanyController as projectCompany'
     })
+    .state('home.ticket', {
+        url: '/newticket',
+        templateUrl:'templates/ticket.html',
+        controller: 'ProjectTicketController as projectTicket'
+    })
 })
 
 // Home Controller
@@ -272,6 +277,73 @@ angular.module('myApp', [
 
             return true;
           }
+})
+
+// Ticket controller 
+.controller("ProjectTicketController", function($rootScope, $scope, $firebaseObject, $location) {
+    $scope.companies = [];
+    $scope.list = [];
+    $scope.loader = true;
+    $scope.ticket = {
+        empresa: "",
+        produto: "",
+        qtd: 0
+    }
+
+    firebase.database().ref('/company').once('value').then(function(snapshot) {
+        $scope.companies = snapshot.val();
+        $scope.loader = false;
+        $scope.$apply();
+    });
+
+    $scope.addList = function(){
+        $scope.formSuccess = false;
+        if(Object.keys($scope.list).indexOf($scope.ticket.empresa) == -1){
+             $scope.list[$scope.ticket.empresa] = [];
+        }
+        $scope.list[$scope.ticket.empresa].push({
+            produto: $scope.ticket.produto,
+            qtd: $scope.ticket.qtd
+        });
+    }
+
+    $scope.empresaChange = function(){
+        //if($scope.list.length > 0 && $scope.ticket.empresa != Object.keys($scope.list)[0] ){
+            //confirm("Deseja realmente trocar a empresa? Se confirmar irá remover os itens de sua lista.");
+        //}
+    }
+
+    $scope.removeItemList = function(index){
+       $scope.list[$scope.ticket.empresa].splice(index, 1);
+    }
+
+    $scope.validaAddList = function(){
+        var teste = true;
+        if( $scope.ticket.empresa.length > 0 && $scope.ticket.produto.length > 0 && $scope.ticket.qtd > 0){
+            teste = false;
+        }
+        return teste;
+    }
+
+    $scope.submitList = function(){
+        var lista = {
+            empresa:$scope.ticket.empresa,
+            created_at:new Date(),
+            itens:angular.copy($scope.list[$scope.ticket.empresa])
+        }
+        var updates = {};
+        var newPostKey = firebase.database().ref().child('ticket/').push().key;
+        
+        updates['/ticket/' + $rootScope.usuarioLogado.uid + '/' + newPostKey] = lista;
+        $scope.formSuccess = firebase.database().ref().update(updates);
+        if($scope.formSuccess){
+            $scope.list[$scope.ticket.empresa] = [];
+        }
+    }
+
+    $scope.buttonDisablePedido = function(){
+        return Object.keys($scope.list).length > 0 && $scope.list[$scope.ticket.empresa].length > 0;
+    }
 })
 
 // Diretiva para verificar confirmação de senha
