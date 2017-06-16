@@ -50,6 +50,16 @@ angular.module('myApp', [
         templateUrl:'templates/ticket.html',
         controller: 'ProjectTicketController as projectTicket'
     })
+    .state('home.viewTickets',{
+        url: '/viewtickets',
+        templateUrl:'templates/view_tickets.html',
+        controller: 'ProjectViewTicketController as ProjectViewTicket',
+        params: {
+            companies: null,
+            tickets: null,
+            key: null
+        }
+    })
 })
 
 // Home Controller
@@ -343,6 +353,65 @@ angular.module('myApp', [
 
     $scope.buttonDisablePedido = function(){
         return Object.keys($scope.list).length > 0 && $scope.list[$scope.ticket.empresa].length > 0;
+    }
+})
+
+// View Ticket controller
+.controller("ProjectViewTicketController", function($rootScope, $scope, $state, $stateParams, $firebaseObject) {
+    
+    if(!$stateParams.companies || !$stateParams.tickets || !$stateParams.key ){
+        $state.go("home.dashboard");
+    }
+
+    $scope.form = {
+        cnpj:$stateParams.key?$stateParams.companies[$stateParams.key].cnpj:"",
+        pedido:""
+    }
+    $scope.list = [];
+    $scope.empresa = $stateParams.companies[$stateParams.key].name;
+
+    $scope.$watch("form.cnpj", function(newVal, oldVal) {
+      if (newVal !== oldVal) {
+          $scope.empresa = "";
+          angular.forEach($stateParams.companies, function(element, key){
+                if(element.cnpj == newVal){
+                    $scope.empresa = element.name;
+                }
+          });
+      }
+    });
+
+    $scope.$watch("form.pedido", function(newVal, oldVal) {
+      if (newVal !== oldVal) {
+          $scope.empresa = "";
+          angular.forEach($stateParams.companies, function(element, key){
+                if(element.key == newVal){
+                    $scope.empresa = element.name;
+                }
+          });
+      }
+    });
+
+    angular.forEach($stateParams.tickets,function(value, key){
+        var pedido = {
+            key:key,
+            empresa:{
+                name:$stateParams.companies[value.empresa].name,
+                cnpj:$stateParams.companies[value.empresa].cnpj
+            },
+            produtos:value.itens
+        }
+        $scope.list.push(pedido);
+    });
+
+
+    $scope.cancelPedido = function(index, key){
+       firebase.database().ref('/ticket/' + $rootScope.usuarioLogado.uid + '/' + key +'/').remove()
+        .then(function() {
+            $scope.list.splice(index,1);
+        }, function(error) {
+            console.log(error);
+        });
     }
 })
 

@@ -1,0 +1,83 @@
+<div>
+    <h3>Novo Pedido</h3>
+    </br>
+
+    <form class="" name="ticketForm" role="form" 
+        ng-submit="addList()" style="max-width: 550px;padding: 15px;margin: 0 auto;">
+        <div class="form-group">
+            <label>Selecione uma empresa</label>
+            <select class="form-control" ng-class="{'loader': loader}" name="empresa" ng-model="ticket.empresa" ng-change="empresaChange()">
+                <option value="">Selecione uma empresa</option>
+                <option ng-repeat="(key, data) in companies" value="{{key}}">
+                    {{data.name}}
+                </option>
+            </select>
+        </div> 
+        <div class="form-group row">
+            <div class="form-group col-md-8">
+                <!--<label>Senha</label>-->
+                <select class="form-control" name="produto" ng-model="ticket.produto">
+                    <option value="" >Selecione um produto</option>
+                    <option>Cerveja</option>
+                    <option>Carne</option>
+                    <option>Pão de alho</option>
+                    <option>Refrigerante</option>
+                    <option>Guardanapo</option>
+                    <option>Carvão</option>
+                    <option>Alcool</option>
+                    <option>Churrasqueira</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <div class="form-inline">
+                    <label style="padding-top: 8px; padding-right:2px;" class="pull-left">Qtd:</label>
+                    <input type="number" name="qtd" class="form-control" ng-model="ticket.qtd"  ng-model="tiket.qtd" placeholder="Quantidade" style="width: 80%;">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-6">
+                <button type="reset" class="btn btn-default btn-block" >Limpar</button>
+            </div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary btn-block" ng-disabled="validaAddList()">Adicionar</button>
+            </div>
+        </div>  
+    </form>
+    </br>
+    </br>
+    <table class="table">  
+        <h4>Lista de compras {{companies[ticket.empresa].name}}</h4>
+        <thead> 
+            <tr> 
+                <th>#</th> 
+                <th>Produto</th> 
+                <th>Qtd</th> 
+                <th>Ação</th> 
+            </tr> 
+        </thead> 
+        <tbody> 
+            <tr ng-repeat="(key, data) in list[ticket.empresa]"> 
+                <th scope="row">{{$index + 1}}</th> 
+                <td>{{data.produto}}</td> 
+                <td>{{data.qtd}}</td> 
+                <td>
+                    <button class="btn btn-danger btn-xs" ng-click="removeItemList($index)">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </td> 
+            </tr>     
+        </tbody> 
+    </table>
+
+<div class="form-group clearfix">
+    <div class="col-sm-2">
+        <button type="button" class="btn btn-primary btn-block" ng-disabled="!buttonDisablePedido()" ng-click="submitList()">Finalizar pedido</button>
+    </div>
+</div>
+</br>  
+    <p class="bg-success" ng-show="formSuccess" style="padding: 15px;">
+        <span>Pedido para empresa {{companies[ticket.empresa].name}} realizado com sucesso.</span>
+    </p>
+</div>
