@@ -60,6 +60,11 @@ angular.module('myApp', [
             key: null
         }
     })
+    .state('home.dashboard',{
+        url: '/',
+        templateUrl:'templates/dashboard.html',
+        controller: 'ProjectDashboardController as ProjectDashboard'
+    })
 })
 
 // Home Controller
@@ -411,6 +416,45 @@ angular.module('myApp', [
             $scope.list.splice(index,1);
         }, function(error) {
             console.log(error);
+        });
+    }
+})
+
+// Dashboard Controller
+.controller("ProjectDashboardController", function($rootScope, $scope, $state) {
+    $scope.companies = {};
+    $scope.tickets = {};
+    $scope.tableList = [];
+
+    // load companies
+    firebase.database().ref('/company').once('value').then(function(snapshot) {
+        $scope.companies = snapshot.val();
+        populateTable();
+    });
+
+    // load tickets
+    firebase.database().ref('/ticket/' + $rootScope.usuarioLogado.uid + '/').once('value').then(function(snapshot) {
+        $scope.tickets = snapshot.val();
+        populateTable();
+    });
+
+    var populateTable = function(){
+        if(Object.keys($scope.companies).length > 0  && Object.keys($scope.tickets).length > 0 ){
+            angular.forEach($scope.tickets,function(element,key) {
+                if( Object.keys($scope.companies[element.empresa]).indexOf("tickets") == -1 ){
+                     $scope.companies[element.empresa].tickets = {};
+                }
+                $scope.companies[element.empresa].tickets[key] = element.itens;
+            }, this);
+        }
+        $scope.$apply();
+    }
+
+    $scope.toViewTickets = function(id){
+        $state.go("home.viewTickets", {
+            key:id,
+            companies:$scope.companies,
+            tickets:$scope.tickets
         });
     }
 })

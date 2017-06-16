@@ -1,0 +1,32 @@
+<div>
+    <h3>Dashboard</h3>
+    </br>
+
+    <table class="table">  
+        <h4>Minhas empresas</h4>
+        <thead> 
+            <tr> 
+                <th>#</th> 
+                <th>Nome fantasia</th> 
+                <th>CNPJ</th> 
+                <th>Qtd de pedidos</th> 
+            </tr> 
+        </thead> 
+        <tbody> 
+            <tr ng-hide="(companies | objectKeysLength) > 0" >
+                <td colspan="4" align="center">
+                    <img src="assets/svg/loader.svg"/>
+                </td>
+            </tr>
+            <tr ng-show="(companies | objectKeysLength) > 0" ng-repeat="(key, data) in companies"> 
+                <th scope="row">{{$index}}</th> 
+                <td>{{data.name}}</td> 
+                <td>{{data.cnpj}}</td>
+                <td ng-if="data.tickets == undefined">nenhum</td>
+                <td ng-if="(data.tickets | objectKeysLength) > 0">
+                    <button class="btn btn-info btn-xs" ng-click="toViewTickets(key)">{{data.tickets | objectKeysLength}}</button>
+                </td>  
+            </tr>     
+        </tbody> 
+    </table>
+</div>
