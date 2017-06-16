@@ -1,0 +1,35 @@
+<div>
+    <h3>Cadastro Nova Empresa</h3>
+    </br>
+    <form class="form-signin col-sm-offset-2" name="companyForm" role="form" 
+        ng-submit="submit()" style="max-width: 550px;padding: 15px;margin: 0 auto;" novalidate>
+        <div class="form-group" ng-class="{ 'has-error' : companyForm.name.$dirty && companyForm.name.$invalid }">
+            <label>Nome fantasia</label>
+            <input type="text" name="name" class="form-control" ng-model="cp.name" required>
+            <p class="help-block">
+                <span ng-show="companyForm.name.$dirty && companyForm.name.$error.required">Nome é requerido.</span>
+            </p>
+        </div> 
+        <div class="form-group" ng-class="{ 'has-error' : companyForm.cnpj.$dirty && companyForm.cnpj.$invalid }">
+            <label>CNPJ</label>
+            <input type="text" name="cnpj" class="form-control" ng-model="cp.cnpj" ng-blur="validaCNPJ()" ui-mask="99.999.999/9999-99" required>
+            <p class="help-block" ng-if="companyForm.cnpj.$dirty">
+                <span class="clearfix" ng-show="companyForm.cnpj.$error.required">CNPJ é requerido.</span>
+                <span ng-show="companyForm.cnpj.$error.validateCnpj">CNPJ inválido</span>
+            </p>
+        </div>
+        <div class="form-group clearfix">
+            <div class="col-sm-4">
+                <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+            </div>
+        </div>  
+        </br>  
+        <p class="bg-success clearfix" ng-show="formSuccess" style="padding: 15px;">
+            <span>Adicionado com sucesso.</span>
+        </p>
+        <p class="bg-danger" ng-show="cnpjExist" style="padding: 15px;">
+            <span>CNPJ já utilizado, favor utilizar outro.</span>
+        </p>
+        <!--<button ladda-loading="login.loading" data-style="expand-right" ng-disabled="!user.email || !user.password" type="button" ng-click="SignIn($event)" class="btn btn-lg segoe-ui-light ladda-button btn-primary btn-block"><span class="ladda-label">Sign In</span></button>-->
+    </form>
+</div>
