@@ -15,7 +15,7 @@ O sistema possui os seguintes passos:
 - Pedidos realizados;
 - Sair;
 
-[Descrição para desenvolvimento](descricao_teste.md)
+[Descrição para desenvolvimento](Descricao_teste.md)
 
 [Para mais informações sobre Firebase Database](https://firebase.google.com/docs/database/)
 
@@ -36,7 +36,7 @@ Caso quiser iniciar com Firebase CLI
 
 Hospedagem 
 ----------
-https://taller-9a149.firebaseapp.com/#!/login
+https://taller-9a149.firebaseapp.com
 
 
 Licença
