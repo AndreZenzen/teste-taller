@@ -1,37 +1,45 @@
 # Pedidos Churrasco
 
-Utilização de Firebase Database
-===============================
+Introdução
+----------
 
-The Project is a simple dashboard for demonstrates how to connect to the Firebase Realtime Database and
-to send and retrieve data through.
+Este projeto é um simples painel (dashboard) para demostração referente a realizar pedidos para um churrasco, e utiliza para guardar dados a ferramenta online Firebase Database.
 
-Introduction
-------------
+O sistema possui os seguintes passos:
+- Criação de usuário;
+- Login;
+- Adicionar empresa;
+- Criar novo pedido;
+- Meus dados;
+- Painel;
+- Pedidos realizados;
+- Sair;
 
-[Read more about Firebase Database](https://firebase.google.com/docs/database/)
-[Based in this quickstart](https://github.com/firebase/quickstart-js/tree/master/database)
+[Descrição para desenvolvimento](descricao_teste.md)
 
-Getting Started gulp
---------------------
+[Para mais informações sobre Firebase Database](https://firebase.google.com/docs/database/)
 
- 1. You have the Gulp global installed. If you don't have it install it with `npm install -g gulp`.
- 1. Run `npm run serve` using the Gulp to launch a local server.
- 1. Local server: http://localhost:8000
+[Desenvolvimento baseado neste início rápido](https://github.com/firebase/quickstart-js/tree/master/database)
 
-Getting Started Firebase
-------------------------
+Começando com Gulp
+------------------
+ 1. Você tem o Gulp instalado globalmente. Se você não tiver, instale-o com o comando `npm install -g gulp`.
+ 2. `npm run serve` ou `gulp` incia um servidor local.
+ 3. Acesse a url: http://localhost:8000
 
- 1. You must have the Firebase CLI installed. If you don't have it install it with `npm install -g firebase-tools` and then configure it with `firebase login`.
- 1. On the command line run `firebase serve` using the Firebase CLI tool to launch a local server.
- 1. Local server: http://localhost:5000
+Caso quiser iniciar com Firebase CLI
+------------------------------------
 
-Hosting 
--------
+ 1. Você deverá ter o Firebase CLI instalado, Se não tive execute o comando `npm install -g firebase-tools` e configure com `firebase login`.
+ 2. `firebase serve` cria um servidor local.
+ 1. Acesse a url: http://localhost:5000
+
+Hospedagem 
+----------
 https://taller-9a149.firebaseapp.com/#!/login
 
 
-License
+Licença
 -------
 
 © Google, 2016. Licensed under an [Apache-2](../LICENSE) license.
